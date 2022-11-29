@@ -15,6 +15,7 @@ def DEBUG(txt):
     if mDEBUG: print("DEBUG: " + txt)
 
 def DEBUG_RESP(code):
+    if not mDEBUG: return
     DEBUG("Fetching finished with response code " + str(code) + ": " + respCodeDict[code])
 
 
@@ -63,4 +64,16 @@ DEBUG("Done")
 if len(ingFailed) > 0:
     DEBUG("Could not obtain ingredients: " + json.dumps(ingFailed))
 
+DEBUG("Processing ingredient data")
+jsonStr = "{"
+for ingName in ingList:
+    if not os.path.exists(resPath + "ing_" + ingName + ".json"): continue
+    with open(resPath + "ing_" + ingName + ".json") as f:
+        jsonStr += "\"" + ingName + "\":" + json.dumps(json.loads(f.read())["data"][0]) + ","
+jsonStr = jsonStr[:-1] + "}"
+DEBUG("Writing processed data to output")
+with open(scriptPath + "/ProcessedData.json", 'w') as f:
+    f.write(jsonStr)
+
+print("Done")
 input("Press enter to exit...")

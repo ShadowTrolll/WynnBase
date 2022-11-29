@@ -11,11 +11,159 @@
             * {
                 font-family: 'Roboto', sans-serif;
             }
+
+            body {
+                background-color: #999999;
+                max-width: 960px;
+                margin: 0 auto 0 auto;
+                display: flexbox;
+                flex-direction: column;
+                justify-content: center;
+                align-items: stretch;
+            }
+
+            body div {
+                display: flex;
+                justify-content: center;
+            }
+
+            .searchDiv {
+                display: flexbox;
+                margin: 0 0 0 20px;
+                flex-direction: row;
+                justify-content: center;
+                align-items: stretch;
+            }
+
+            .searchDiv div {
+                display: flexbox;
+                margin: 0 20px 0 0;
+                flex-direction: column;
+                justify-content: left;
+                align-items: stretch;
+            }
+
+            .searchDiv div div {
+                display: flexbox;
+                flex-direction: row;
+            }
+
+            .reqDiv input {
+                margin: auto;
+                height: 14px;
+            }
+
         </style>
     </head>
     <body>
-        <div style="height: 100%;width: 100%;">
-            <h2>WynnData</h2>
+        <div class="headerDiv">
+            <h1>WynnCraft ingredient search tool</h1>
         </div>
+        <div class="searchBar">
+            <input type="text" style="flex-grow: 8;">
+            <button style="flex-grow: 2;" onclick="SearchIng()">Search</button>
+        </div>
+        <div class="searchDiv">
+            <div>
+                <p style="align-self: center;">Rarity</p>
+                <div>
+                    <input type="checkbox" name="rarity0Chk" id="rarity0Chk">
+                    <label for="rarity0Chk"> ✫✫✫</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="rarity1Chk" id="rarity1Chk">
+                    <label for="rarity1Chk"> <span style="color: yellow;">✫</span>✫✫</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="rarity2Chk" id="rarity2Chk">
+                    <label for="rarity2Chk"> <span style="color: yellow;">✫✫</span>✫</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="rarity3Chk" id="rarity3Chk">
+                    <label for="rarity3Chk"> <span style="color: yellow;">✫✫✫</span></label>
+                </div>
+            </div>
+            <div>
+                <p style="align-self: center;">Professions</p>
+                <div>
+                    <input type="checkbox" name="profArmo" id="profArm">
+                    <label for="profArm">Armouring</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="profTail" id="profTai">
+                    <label for="profTai">Tailoring</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="profWeap" id="profWeap">
+                    <label for="profWeap">Weaponsmithing</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="profWood" id="profWood">
+                    <label for="profWood">Woodworking</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="profJewe" id="profJewe">
+                    <label for="profJewe">Jeweling</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="profAlch" id="profAlch">
+                    <label for="profAlch">Alchemism</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="profScri" id="profScri">
+                    <label for="profScri">Scribing</label>
+                </div>
+                <div>
+                    <input type="checkbox" name="profCook" id="profCook">
+                    <label for="profCook">Cooking</label>
+                </div>
+            </div>
+            <div>
+                <p style="align-self: center;">Requirements</p>
+                <div class="reqDiv">
+                    <p>Level:&nbsp</p>
+                    <input type="number" name="reqMinLvl" id="reqMinLvl">
+                    <p>&nbsp-&nbsp</p>
+                    <input type="number" name="reqMaxLvl" id="reqMaxLvl">
+                </div>
+
+            </div>
+        </div>
+        <div class="tableDiv">
+            <table>
+
+            </table>
+        </div>
+
+        <script>
+            let ingList = [];
+            let ingDict = {};
+            
+            function Get(yourUrl){
+                let Httpreq = new XMLHttpRequest();
+                Httpreq.open("GET",yourUrl,false);
+                Httpreq.send(null);
+                return Httpreq.responseText;          
+            }
+
+            function VerifyIngDict() {
+                if (Object.keys(ingList).length === 0) {
+                    let dataJson = JSON.parse(Get("https://shadowtrolll.github.io/WynnBase/Resources/ingredient_list.json"));
+                    if (dataJson["code"] !== 200) return false; 
+                    ingList = dataJson["data"][0];
+                }
+
+                if (Object.keys(ingDict).length === 0) {
+                    ingDict = JSON.parse(Get("https://shadowtrolll.github.io/WynnBase/ProcessedData.json"));
+                }
+
+                return true;
+            }
+
+            function SearchIng() {
+                if (!VerifyIngDict()) return;
+                console.debug(ingDict);
+            }
+        </script>
     </body>
 </html>
