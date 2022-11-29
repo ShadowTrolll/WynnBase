@@ -68,9 +68,8 @@
                 background-color: #8c8c8c;
             }
 
-            .tableDiv table tbody tr {
-                border: solid;
-                border-width: 1px 0;
+            .tableDiv table tbody tr td {
+                border: 1px solid #7a7a7a;
             }
         </style>
     </head>
@@ -154,6 +153,7 @@
                     <tr>
                         <th>Ingredient</th>
                         <th>Identifications</th>
+                        <th>Durability</th>
                         <th>Usage</th>
                     </tr>
                 </thead>
@@ -244,6 +244,10 @@
                     });
                 }
 
+                console.debug("Filtering by level");
+                results = results.filter(function(value, index, arr) { 
+                    return (lvlMin <= ingDict[value]["level"]) && (ingDict[value]["level"] <= lvlMax);
+                });
 
 
                 // -------------- Output into table -----------------
@@ -259,7 +263,7 @@
 
                 let tHead = dataTable.createTHead();
                 let row = tHead.insertRow();
-                for (headName of ["Ingredient", "Identifications", "Usage"]) {
+                for (headName of ["Ingredient", "Identifications", "Durability","Usage"]) {
                     let cell = row.insertCell();
                     let colText = document.createElement("th");
                     colText.innerHTML = headName
@@ -281,13 +285,35 @@
                 for (propName in propDict) {
                     parText += propName + " from " + propDict[propName]["minimum"] + " to " + propDict[propName]["maximum"] + "\n";
                 }
+                propDict = ingObj["ingredientPositionModifiers"];
+                for (propName in propDict) {
+                    if (propDict[propName] === 0) continue;
+                    parText += "Effect of " + propName + ": " + propDict[propName] + "\n";
+                }
+                colPar.innerHTML = (parText);
+                colPar.style = "margin: 2px 0 2px 0; white-space: pre-wrap;";
+                cell.appendChild(colPar);
+
+                cell = row.insertCell();
+                colPar = document.createElement("div");
+                parText = "";
+                propDict = ingObj["itemOnlyIDs"];
+                for (propName in propDict) {
+                    if (propDict[propName] === 0) continue;
+                    parText += propName + ": " + propDict[propName] + "\n";
+                }
+                propDict = ingObj["consumableOnlyIDs"];
+                for (propName in propDict) {
+                    if (propDict[propName] === 0) continue;
+                    parText += propName + ": " + propDict[propName] + "\n";
+                }
                 colPar.innerHTML = (parText);
                 colPar.style = "margin: 2px 0 2px 0; white-space: pre-wrap;";
                 cell.appendChild(colPar);
 
                 cell = row.insertCell();
                 colPar = document.createElement("p");
-                colPar.innerHTML = (ingObj["skills"].join(", ").toLowerCase());
+                colPar.innerHTML = ("Requires&nbsplvl:&nbsp" + ingObj["level"] + ", " + ingObj["skills"].join(", ").toLowerCase());
                 colPar.style = "margin: 2px 0 2px 0; max-width: 180px;";
                 cell.appendChild(colPar);
             }
