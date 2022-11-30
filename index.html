@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>WynnBase</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="UTF-8">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -238,6 +239,7 @@
     <body onload="VerifyIngDict()">
         <div class="headerDiv">
             <h1>WynnCraft ingredient search tool</h1>
+            <p>By ShadowTrolll</p>
         </div>
         <div class="searchBar">
             <input type="text" class="styledElem" style="flex-grow: 8; margin-right: 4px;" id="nameInput" placeholder="Name must contain...">
@@ -430,7 +432,7 @@
                     console.debug("Filtering by profession");
                     results = results.filter(function(value, index, arr) { 
                         if (profFilterMode) {
-                            return (Object.keys(profFilter)).every(item => (profFilter[item] === ingDict[value]["skills"].includes(item)));
+                            return (Object.keys(profFilter)).every(item => (!profFilter[item] || ingDict[value]["skills"].includes(item)));
                         } else {
                             return ingDict[value]["skills"].some(item => profFilter[item]);
                         }
