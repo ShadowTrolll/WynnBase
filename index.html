@@ -176,12 +176,10 @@
             }
 
             function VerifyIngDict() {
-                if (Object.keys(ingList).length === 0) {
-                    console.debug("Fetching ingredient data");
-                    let dataJson = JSON.parse(Get("https://shadowtrolll.github.io/WynnBase/IngData.json"));
-                    ingList = dataJson["LIST"];
-                    ingDict = dataJson["DATA"];
-                }
+                console.debug("Fetching ingredient data");
+                let dataJson = JSON.parse(Get("https://shadowtrolll.github.io/WynnBase/IngData.json"));
+                ingList = dataJson["LIST"];
+                ingDict = dataJson["DATA"];
 
                 ingList = ingList.filter(function(value, index, arr) { 
                     return typeof(ingDict[value]) !== "undefined";
@@ -290,7 +288,8 @@
                 let propDict = ingObj["identifications"];
                 for (propName in propDict) {
                     textPar = document.createElement("p");
-                    textPar.innerHTML = propName + " from " + propDict[propName]["minimum"] + " to " + propDict[propName]["maximum"];
+                    if (propDict[propName]["minimum"] === propDict[propName]["maximum"]) textPar.innerHTML = propName + " " + propDict[propName]["minimum"];
+                    else textPar.innerHTML = propName + " from " + propDict[propName]["minimum"] + " to " + propDict[propName]["maximum"];
                     sectionDiv.appendChild(textPar);
                 }
                 propDict = ingObj["ingredientPositionModifiers"];
