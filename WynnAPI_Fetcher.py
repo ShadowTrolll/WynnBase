@@ -1,15 +1,73 @@
 import requests
 import json
 import os
+import re
 
 mDEBUG = True
 
 scriptPath = os.getcwd()
 resPath = scriptPath + "/Resources/"
 baseUrl = r"https://api.wynncraft.com/v2/"
-respCodeDict = {200: "Success", 400: "Bad Request", 404: "Not Found",
-                429: "Too Many Requests", 500: "Internal Server Error",
-                502: "Bad Gateway", 503: "Service Unavailable"}
+respCodeDict = {
+    200: "Success", 400: "Bad Request", 404: "Not Found",
+    429: "Too Many Requests", 500: "Internal Server Error",
+    502: "Bad Gateway", 503: "Service Unavailable"
+    }
+attrDict = {
+    "\"left\"": "\"Ingredient Effectiveness (Left of This) [%]\"",
+    "\"right\"": "\"Ingredient Effectiveness (Right of This) [%]\"",
+    "\"above\"": "\"Ingredient Effectiveness (Above This) [%]\"",
+    "\"under\"": "\"Ingredient Effectiveness (Under This) [%]\"",
+    "\"touching\"": "\"Ingredient Effectiveness (Touching This) [%]\"",
+    "\"notTouching\"": "\"Ingredient Effectiveness (Not Touching This) [%]\"",
+    "\"duration\"": "\"Effect Duration [s]\"",
+    "\"durabilityModifier\"": "\"Durability\"",
+    "\"strengthRequirement\"": "\"Requires Strength\"",
+    "\"dexterityRequirement\"": "\"Requires Dexterity\"",
+    "\"intelligenceRequirement\"": "\"Requires Intelligence\"",
+    "\"defenceRequirement\"": "\"Requires Defence\"",
+    "\"agilityRequirement\"": "\"Requires Agility\"",
+    "\"charges\"": "\"Charge Count\"",
+    "\"INTELLIGENCEPOINTS\"": "\"Intelligence\"",
+    "\"STRENGTHPOINTS\"": "\"Strength\"",
+    "\"DEXTERITYPOINTS\"": "\"Dexterity\"",
+    "\"DEFENCEPOINTS\"": "\"Defence\"",
+    "\"AGILITYPOINTS\"": "\"Agility\"",
+    "\"DAMAGEBONUS\"": "\"Main Attack Damage [%]\"",
+    "\"EARTHDAMAGEBONUS\"": "\"Earth Damage [%]\"",
+    "\"THUNDERDAMAGEBONUS\"": "\"Thunder Damage [%]\"",
+    "\"WATERDAMAGEBONUS\"": "\"Water Damage [%]\"",
+    "\"FIREDAMAGEBONUS\"": "\"Fire Damage [%]\"",
+    "\"AIRDAMAGEBONUS\"": "\"Air Damage [%]\"",
+    "\"SPELLDAMAGE\"": "\"Spell Damage [%]\"",
+    "\"DAMAGEBONUSRAW\"": "\"Main Attack Damage [RAW]\"",
+    "\"EARTHDAMAGEBONUSRAW\"": "\"Earth Damage [RAW]\"",
+    "\"THUNDERDAMAGEBONUSRAW\"": "\"Thunder Damage [RAW]\"",
+    "\"WATERDAMAGEBONUSRAW\"": "\"Water Damage [RAW]\"",
+    "\"FIREDAMAGEBONUSRAW\"": "\"Fire Damage [RAW]\"",
+    "\"AIRDAMAGEBONUSRAW\"": "\"Air Damage [RAW]\"",
+    "\"SPELLDAMAGERAW\"": "\"Spell Damage [RAW]\"",
+    "\"GATHER_SPEED\"": "\"Gathering Speed [%]\"",
+    "\"GATHER_XP_BONUS\"": "\"Gathering XP Bonus [%]\"",
+    "\"HEALTHBONUS\"": "\"Health\"",
+    "\"HEALTHREGENRAW\"": "\"Health Regen [RAW]\"",
+    "\"HEALTHREGEN\"": "\"Health Regen [%]\"",
+    "\"LIFESTEAL\"": "\"Life Steal [Per 4s]\"",
+    "\"MANASTEAL\"": "\"Mana Steal [Per 3s]\"",
+    "\"EARTHDEFENSE\"": "\"Earth Defense [%]\"",
+    "\"THUNDERDEFENSE\"": "\"Thunder Defense [%]\"",
+    "\"WATERDEFENSE\"": "\"Water Defense [%]\"",
+    "\"FIREDEFENSE\"": "\"Fire Defense [%]\"",
+    "\"AIRDEFENSE\"": "\"Air Defense [%]\"",
+    "\"WEAPONSMITHING\"": "\"Weaponsmithing\"",
+    "\"WOODWORKING\"": "\"Woodworking\"",
+    "\"ARMOURING\"": "\"Armouring\"",
+    "\"TAILORING\"": "\"Tailoring\"",
+    "\"JEWELING\"": "\"Jeweling\"",
+    "\"COOKING\"": "\"Cooking\"",
+    "\"ALCHEMISM\"": "\"Alchemism\"",
+    "\"SCRIBING\"": "\"Scribing\""
+    }
 
 def DEBUG(txt):
     if mDEBUG: print("DEBUG: " + txt)
@@ -64,15 +122,25 @@ DEBUG("Done")
 if len(ingFailed) > 0:
     DEBUG("Could not obtain ingredients: " + json.dumps(ingFailed))
 
+DEBUG("Building output JSON")
+jsonStr = "{\"LIST\":"
+jsonStr += json.dumps(ingList)
+
 DEBUG("Processing ingredient data")
-jsonStr = "{"
+regex = re.compile("(%s)" % "|".join(map(re.escape, attrDict.keys())))
+jsonStr += ",\"DATA\":{"
 for ingName in ingList:
     if not os.path.exists(resPath + "ing_" + ingName + ".json"): continue
     with open(resPath + "ing_" + ingName + ".json") as f:
-        jsonStr += "\"" + ingName + "\":" + json.dumps(json.loads(f.read())["data"][0]) + ","
+        itemStr = json.dumps(json.loads(f.read())["data"][0])
+        itemStr = regex.sub(lambda mo: attrDict[mo.string[mo.start():mo.end()]], itemStr) 
+        jsonStr += "\"" + ingName + "\":" + itemStr + ","
 jsonStr = jsonStr[:-1] + "}"
+
+
 DEBUG("Writing processed data to output")
-with open(scriptPath + "/ProcessedData.json", 'w') as f:
+jsonStr += "}"
+with open(scriptPath + "/IngData.json", 'w') as f:
     f.write(jsonStr)
 
 print("Done")

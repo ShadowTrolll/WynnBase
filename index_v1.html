@@ -177,10 +177,15 @@
 
             function VerifyIngDict() {
                 if (Object.keys(ingList).length === 0) {
+                    console.debug("Fetching ingredient list");
+                    let dataJson = JSON.parse(Get("https://shadowtrolll.github.io/WynnBase/Resources/ingredient_list.json"));
+                    if (dataJson["code"] !== 200) return false; 
+                    ingList = dataJson["data"];
+                }
+
+                if (Object.keys(ingDict).length === 0) {
                     console.debug("Fetching ingredient data");
-                    let dataJson = JSON.parse(Get("https://shadowtrolll.github.io/WynnBase/Resources/IngData.json"));
-                    ingList = dataJson["LIST"];
-                    ingDict = dataJson["DATA"];
+                    ingDict = JSON.parse(Get("https://shadowtrolll.github.io/WynnBase/ProcessedData.json"));
                 }
 
                 ingList = ingList.filter(function(value, index, arr) { 
@@ -215,14 +220,14 @@
                     document.getElementById("rarity3Chk").checked
                 ]; 
                 let profFilter = {
-                    "Weaponsmithing": document.getElementById("profWeap").checked,
-                    "Woodworking": document.getElementById("profWood").checked,
-                    "Armouring": document.getElementById("profArmo").checked,
-                    "Tailoring": document.getElementById("profTail").checked,
-                    "Jeweling": document.getElementById("profJewe").checked,
-                    "Cooking": document.getElementById("profCook").checked,
-                    "Alchemism": document.getElementById("profAlch").checked,
-                    "Scribing": document.getElementById("profScri").checked
+                    "WEAPONSMITHING": document.getElementById("profWeap").checked,
+                    "WOODWORKING": document.getElementById("profWood").checked,
+                    "ARMOURING": document.getElementById("profArmo").checked,
+                    "TAILORING": document.getElementById("profTail").checked,
+                    "JEWELING": document.getElementById("profJewe").checked,
+                    "COOKING": document.getElementById("profCook").checked,
+                    "ALCHEMISM": document.getElementById("profAlch").checked,
+                    "SCRIBING": document.getElementById("profScri").checked
                 };
                 let lvlMin = document.getElementById("reqMinLvl").value;
                 let lvlMax = document.getElementById("reqMaxLvl").value;
