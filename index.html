@@ -10,7 +10,7 @@
         <style>
             * {
                 font-family: 'Roboto', sans-serif;
-                color: #949494;
+                color: #c7c7c7;
             }
 
             body {
@@ -31,24 +31,35 @@
 
             .searchDiv {
                 display: flexbox;
-                margin: 0 0 0 20px;
+                margin: 8px 0 0 0;
+                padding: 8px 0 8px 0;
                 flex-direction: row;
                 flex-wrap: wrap;
                 justify-content: center;
                 align-items: stretch;
+                background-color: #17121f;
+                border: 4px solid #21b2de ;
+                border-radius: 2px;
             }
 
             .searchDiv div {
                 display: flexbox;
-                margin: 0 20px 0 0;
+                margin: 0 0 0 0;
+                padding: 0px 8px 0px 8px;
                 flex-direction: column;
                 justify-content: left;
                 align-items: stretch;
+                border-right: 1px solid #21b2de ;
+            }
+
+            .searchDiv div:last-child {
+                border-right: none;
             }
 
             .searchDiv div div {
                 display: flexbox;
                 flex-direction: row;
+                border: none;
             }
 
             .reqDiv input {
@@ -66,7 +77,7 @@
 
             .dataContainer div {
                 display: flexbox;
-                margin: 4px;
+                margin: 8px;
                 flex-direction: column;
                 justify-content: center;
                 background-color: #17121f;
@@ -76,14 +87,26 @@
 
             .dataContainer div div {
                 display: flex;
-                margin: 2px 6px 2px 6px;
+                margin: 0px 6px 0px 6px;    
+                padding: 2px 0px 3px 0px;
                 align-items: center;   
                 border: none;
                 border-bottom: 1px solid #643494;
             }
 
+            .dataContainer div div:last-child {
+                border-bottom: none;
+            }
+
+
             .dataContainer div p {
                 margin: 0 0 0 0;
+            }
+
+            .styledElem {
+                background-color: #17121f;
+                border: 4px solid #21b2de ;
+                border-radius: 2px;
             }
         </style>
     </head>
@@ -92,8 +115,8 @@
             <h1>WynnCraft ingredient search tool</h1>
         </div>
         <div class="searchBar">
-            <input type="text" style="flex-grow: 8;" id="nameInput">
-            <button style="flex-grow: 2;" onclick="SearchIng()">Search</button>
+            <input type="text" class="styledElem" style="flex-grow: 8; margin-right: 4px;" id="nameInput" placeholder="Name must contain...">
+            <button class="styledElem" style="flex-grow: 2;" onclick="SearchIng()">Search</button>
         </div>
         <div class="searchDiv">
             <div>
@@ -154,9 +177,9 @@
                 <p style="align-self: center;">Requirements</p>
                 <div class="reqDiv">
                     <p>Level:&nbsp</p>
-                    <input type="number" name="reqMinLvl" id="reqMinLvl" value="1" style="max-width: 60px;">
+                    <input type="number" name="reqMinLvl" id="reqMinLvl" value="1" style="max-width: 40px;">
                     <p>&nbsp-&nbsp</p>
-                    <input type="number" name="reqMaxLvl" id="reqMaxLvl" value="150" style="max-width: 60px;">
+                    <input type="number" name="reqMaxLvl" id="reqMaxLvl" value="150" style="max-width: 40px;">
                 </div>
 
             </div>
