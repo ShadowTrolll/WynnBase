@@ -293,9 +293,6 @@
                     textPar.innerHTML = propName + " from " + propDict[propName]["minimum"] + " to " + propDict[propName]["maximum"];
                     sectionDiv.appendChild(textPar);
                 }
-                textPar = document.createElement("p");
-                textPar.innerHTML = "<br>";
-                sectionDiv.appendChild(textPar);
                 propDict = ingObj["ingredientPositionModifiers"];
                 for (propName in propDict) {
                     if (propDict[propName] === 0) continue;
@@ -313,9 +310,6 @@
                     textPar.innerHTML = propName + ": " + propDict[propName];
                     sectionDiv.appendChild(textPar);
                 }
-                textPar = document.createElement("p");
-                textPar.innerHTML = "<br>";
-                sectionDiv.appendChild(textPar);
                 propDict = ingObj["consumableOnlyIDs"];
                 for (propName in propDict) {
                     if (propDict[propName] === 0) continue;

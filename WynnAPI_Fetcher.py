@@ -14,12 +14,12 @@ respCodeDict = {
     502: "Bad Gateway", 503: "Service Unavailable"
     }
 attrDict = {
-    "\"left\"": "\"Ingredient Effectiveness (Left of This) [%]\"",
-    "\"right\"": "\"Ingredient Effectiveness (Right of This) [%]\"",
-    "\"above\"": "\"Ingredient Effectiveness (Above This) [%]\"",
-    "\"under\"": "\"Ingredient Effectiveness (Under This) [%]\"",
-    "\"touching\"": "\"Ingredient Effectiveness (Touching This) [%]\"",
-    "\"notTouching\"": "\"Ingredient Effectiveness (Not Touching This) [%]\"",
+    "\"left\"": "\"Effectiveness (Left of This) [%]\"",
+    "\"right\"": "\"Effectiveness (Right of This) [%]\"",
+    "\"above\"": "\"Effectiveness (Above This) [%]\"",
+    "\"under\"": "\"Effectiveness (Under This) [%]\"",
+    "\"touching\"": "\"Effectiveness (Touching This) [%]\"",
+    "\"notTouching\"": "\"Effectiveness (Not Touching This) [%]\"",
     "\"duration\"": "\"Effect Duration [s]\"",
     "\"durabilityModifier\"": "\"Durability\"",
     "\"strengthRequirement\"": "\"Requires Strength\"",
@@ -31,7 +31,7 @@ attrDict = {
     "\"INTELLIGENCEPOINTS\"": "\"Intelligence\"",
     "\"STRENGTHPOINTS\"": "\"Strength\"",
     "\"DEXTERITYPOINTS\"": "\"Dexterity\"",
-    "\"DEFENCEPOINTS\"": "\"Defence\"",
+    "\"DEFENSEPOINTS\"": "\"Defence\"",
     "\"AGILITYPOINTS\"": "\"Agility\"",
     "\"DAMAGEBONUS\"": "\"Main Attack Damage [%]\"",
     "\"EARTHDAMAGEBONUS\"": "\"Earth Damage [%]\"",
@@ -66,8 +66,21 @@ attrDict = {
     "\"JEWELING\"": "\"Jeweling\"",
     "\"COOKING\"": "\"Cooking\"",
     "\"ALCHEMISM\"": "\"Alchemism\"",
-    "\"SCRIBING\"": "\"Scribing\""
+    "\"SCRIBING\"": "\"Scribing\"",
+    "\"STAMINA_REGEN\"": "\"Sprint Regen [%]\"",
+    "\"ATTACKSPEED\"": "\"Attack Speed Tier\"",
+    "\"SPEED\"": "\"Walk Speed [%]\"",
+    "\"THORNS\"": "\"Thorns [%]\"",
+    "\"EXPLODING\"": "\"Exploding [%]\"",
+    "\"POISON\"": "\"Poison [Per 3s]\"",
+    "\"LOOT_QUALITY\"": "\"Loot Quality [%]\"",
+    "\"LOOTBONUS\"": "\"Loot Bonus [%]\"",
+    "\"REFLECTION\"": "\"Reflection [%]\"",
+    "\"SOULPOINTS\"": "\"Soul Point Regen [%]\"",
+    "\"MANAREGEN\"": "\"Mana Regen [Per 5s]\"",
+    "\"EMERALDSTEALING\"": "\"Stealing [%]\""
     }
+#"\"\"": "\"\"",
 
 def DEBUG(txt):
     if mDEBUG: print("DEBUG: " + txt)
