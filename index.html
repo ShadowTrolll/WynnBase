@@ -115,26 +115,30 @@
                 margin: 0;
             }
 
-
-            .idFilter * {
-                margin: 2px;
-                height: 24px;
-            } 
-
             .idFilter select {
-                width: 200px;
+                flex-grow: 1;
             }
             
-            .idFilter button {
-                width: 100%; 
+            .idFilter button { 
                 border: 1px solid #21b2de; 
                 background-color: #17121f; 
                 color: #21b2de;
+                display: flex;
+                justify-content: center;
             }
 
             .idFilter div {
                 margin: 4px;
+                display: flexbox;
+                flex-direction: row;
+                flex-wrap:wrap;
             }
+
+            .idFilter div * {
+                margin: 2px;
+                height: 24px;
+                display: flex;
+            } 
 
             .idFilter input {
                 height: 20px;
