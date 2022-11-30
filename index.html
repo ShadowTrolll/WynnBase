@@ -253,7 +253,7 @@
                     idSel.add(selOpt);
                 }
                 idSel.name = "idSel";
-                idSel.onchange = SearchIng;
+                idSel.setAttribute("onchange", "SearchIng()");
                 filterDiv.appendChild(idSel);
                 filterDiv.innerHTML += "<p>Min:</p><input type=\"number\" name=\"valMin\" onchange=\"SearchIng()\" value=\"1\"><p>Max:</p><input type=\"number\" name=\"valMax\" onchange=\"SearchIng()\" value=\"99999\"><button onclick=\"RemoveFilter(this)\">X</button>"
                 parentDiv.insertBefore(filterDiv, caller);
