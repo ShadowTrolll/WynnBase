@@ -247,19 +247,15 @@
                 let parentDiv = caller.parentElement;
                 let filterDiv = document.createElement("div");
                 let idSel = document.createElement("select");
-                let selIndex = parentDiv.childElementCount;
-                for (idName in idList) {
+                for (idName of idList) {
                     let selOpt = document.createElement("option");
                     selOpt.text = idName;
-                    idSel.appendChild(selOpt);
+                    idSel.add(selOpt);
                 }
                 idSel.name = "idSel";
                 filterDiv.appendChild(idSel);
                 filterDiv.innerHTML += "<p>Min:</p><input type=\"number\" name=\"valMin\" value=\"1\"><p>Max:</p><input type=\"number\" name=\"valMax\" value=\"9999\"><button onclick=\"RemoveFilter(this)\">X</button>"
-                //id=\"idMin" + idFilterIdx + "\"
                 parentDiv.insertBefore(filterDiv, caller);
-
-                idFilterIdx += 1;
             }
 
             function RemoveFilter(caller) {
@@ -361,25 +357,26 @@
 
                 if (doFilterId) {
                     console.debug("Filtering by ID");
-                    for (childElem in document.getElementById("idFilterDiv").children) {
+                    for (childElem of document.getElementById("idFilterDiv").children) {
                         if (childElem.nodeName !== "DIV") continue;
                         let idName, valMin, valMax;
-                        for (idSearchElem in childElem.children) {
+                        for (idSearchElem of childElem.children) {
                             if (idSearchElem.getAttribute("name") === "idSel") idName = idSearchElem.options[idSearchElem.selectedIndex].text;
                             if (idSearchElem.getAttribute("name") === "valMin") valMin = idSearchElem.value;
-                            if (idSearchElem.getAttribute("name") === "valMin") valMax = idSearchElem.value;
+                            if (idSearchElem.getAttribute("name") === "valMax") valMax = idSearchElem.value;
                         }
+                        console.debug("Filtering: " + idName + " from " + valMin + " to " + valMax);
                         results = results.filter(function(value, index, arr) { 
                             let ingObj = ingDict[value]
-                            if (idName in ingObj["consumableOnlyIDs"]) {
+                            if (("consumableOnlyIDs" in ingObj) && (idName in ingObj["consumableOnlyIDs"])) {
                                 return (valMin <= ingObj["consumableOnlyIDs"][idName]["maximum"]) && (ingObj["consumableOnlyIDs"][idName]["minimum"] <= valMax);
                             }
-                            else if (idName in ingObj["itemOnlyIDs"]) {
+                            else if (("itemOnlyIDs" in ingObj) && (idName in ingObj["itemOnlyIDs"])) {
                                 return (valMin <= ingObj["itemOnlyIDs"][idName]["maximum"]) && (ingObj["itemOnlyIDs"][idName]["minimum"] <= valMax);
                             }
-                            else {
+                            else if (idName in ingObj["identifications"]){
                                 return (valMin <= ingObj["identifications"][idName]["maximum"]) && (ingObj["identifications"][idName]["minimum"] <= valMax);
-                            }
+                            } else return false;
                         });
                     }
                 }
