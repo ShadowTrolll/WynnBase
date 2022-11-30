@@ -52,6 +52,10 @@
                 border-right: 1px solid #21b2de ;
             }
 
+            .searchDiv div p {
+                margin: 2px 0px 2px 0px;
+            }
+
             .searchDiv div:last-child {
                 border-right: none;
             }
@@ -159,6 +163,76 @@
                 background-color: #17121f; 
                 color: #21b2de;
             }
+
+            .profModeDiv {
+                display: flexbox;
+                align-self: center;
+                flex-direction: row;
+                justify-content: center;
+                padding: 0px 0px 10px 0px;
+            }
+
+            .profModeDiv * {
+                margin: 0;
+            }
+
+            .profModeDiv p {
+                margin: 0px 4px 0px 6px;
+            }
+
+
+            /* ------ SLIDER ------ */
+            .switch {
+                position: relative;
+                display: inline-block;
+                margin: 4px 6px 0px 6px;
+                width: 30px;
+                height: 17px;
+            }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: #ccc;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 13px;
+                width: 13px;
+                left: 2px;
+                bottom: 2px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+            input:checked + .slider {
+                background-color: #2196F3;
+            }
+
+            input:focus + .slider {
+                box-shadow: 0 0 1px #2196F3;
+            }
+
+            input:checked + .slider:before {
+                -webkit-transform: translateX(13px);
+                -ms-transform: translateX(13px);
+                transform: translateX(13px);
+            }
         </style>
     </head>
     <body onload="VerifyIngDict()">
@@ -191,6 +265,14 @@
             </div>
             <div>
                 <p style="align-self: center;">Professions</p>
+                <div class="profModeDiv">
+                    <p>OR</p>
+                    <label class="switch">
+                        <input type="checkbox" id="profMode">
+                        <span class="slider"></span>
+                    </label>
+                    <p>AND</p>
+                </div>
                 <div>
                     <input type="checkbox" name="profArmo" id="profArmo">
                     <label for="profArmo">Armouring</label>
@@ -323,6 +405,7 @@
                     "Alchemism": document.getElementById("profAlch").checked,
                     "Scribing": document.getElementById("profScri").checked
                 };
+                let profFilterMode = document.getElementById("profMode").checked
                 let lvlMin = document.getElementById("reqMinLvl").value;
                 let lvlMax = document.getElementById("reqMaxLvl").value;
 
@@ -331,6 +414,7 @@
                     return profFilter[key];
                     }).some(item => item != false);
                 let doFilterId = document.getElementById("idFilterDiv").childElementCount > 2;
+                
 
                 // -------------- Filter ingredients -----------------
                 let results = [...ingList];
@@ -345,7 +429,11 @@
                 if (doFilterProf) {
                     console.debug("Filtering by profession");
                     results = results.filter(function(value, index, arr) { 
-                        return ingDict[value]["skills"].some(item => profFilter[item]);
+                        if (profFilterMode) {
+                            return (Object.keys(profFilter)).every(item => (profFilter[item] === ingDict[value]["skills"].includes(item)));
+                        } else {
+                            return ingDict[value]["skills"].some(item => profFilter[item]);
+                        }
                     });
                 }
 
@@ -375,10 +463,10 @@
                         results = results.filter(function(value, index, arr) { 
                             let ingObj = ingDict[value]
                             if (("consumableOnlyIDs" in ingObj) && (idName in ingObj["consumableOnlyIDs"])) {
-                                return (valMin <= ingObj["consumableOnlyIDs"][idName]["maximum"]) && (ingObj["consumableOnlyIDs"][idName]["minimum"] <= valMax);
+                                return (valMin <= ingObj["consumableOnlyIDs"][idName]) && (ingObj["consumableOnlyIDs"][idName] <= valMax);
                             }
                             else if (("itemOnlyIDs" in ingObj) && (idName in ingObj["itemOnlyIDs"])) {
-                                return (valMin <= ingObj["itemOnlyIDs"][idName]["maximum"]) && (ingObj["itemOnlyIDs"][idName]["minimum"] <= valMax);
+                                return (valMin <= ingObj["itemOnlyIDs"][idName]) && (ingObj["itemOnlyIDs"][idName] <= valMax);
                             }
                             else if (idName in ingObj["identifications"]){
                                 return (valMin <= ingObj["identifications"][idName]["maximum"]) && (ingObj["identifications"][idName]["minimum"] <= valMax);
