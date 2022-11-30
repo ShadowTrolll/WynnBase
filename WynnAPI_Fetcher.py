@@ -78,7 +78,10 @@ attrDict = {
     "\"REFLECTION\"": "\"Reflection [%]\"",
     "\"SOULPOINTS\"": "\"Soul Point Regen [%]\"",
     "\"MANAREGEN\"": "\"Mana Regen [Per 5s]\"",
-    "\"EMERALDSTEALING\"": "\"Stealing [%]\""
+    "\"EMERALDSTEALING\"": "\"Stealing [%]\"",
+    "\"XPBONUS\"": "\"XP Bonus [%]\"",
+    "\"STAMINA\"": "\"Sprint [%]\"",
+    "\"JUMP_HEIGHT\"": "\"Jump Height\""
     }
 #"\"\"": "\"\"",
 
@@ -141,15 +144,27 @@ jsonStr += json.dumps(ingList)
 
 DEBUG("Processing ingredient data")
 regex = re.compile("(%s)" % "|".join(map(re.escape, attrDict.keys())))
+idArr = []
 jsonStr += ",\"DATA\":{"
 for ingName in ingList:
     if not os.path.exists(resPath + "ing_" + ingName + ".json"): continue
     with open(resPath + "ing_" + ingName + ".json") as f:
-        itemStr = json.dumps(json.loads(f.read())["data"][0])
-        itemStr = regex.sub(lambda mo: attrDict[mo.string[mo.start():mo.end()]], itemStr) 
+        itemObj = json.loads(f.read())["data"][0]
+        itemStr = json.dumps(itemObj)
+        itemStr = regex.sub(lambda mo: attrDict[mo.string[mo.start():mo.end()]], itemStr)
         jsonStr += "\"" + ingName + "\":" + itemStr + ","
+        for key in itemObj["identifications"].keys():
+            if not key in idArr: idArr.append(key)
 jsonStr = jsonStr[:-1] + "}"
 
+with open(resPath + "ing_" + ingList[0] + ".json") as f:
+    itemObj = json.loads(f.read())["data"][0]
+    for key in itemObj["itemOnlyIDs"].keys():
+        if not key in idArr: idArr.append(key)
+    for key in itemObj["consumableOnlyIDs"].keys():
+        if not key in idArr: idArr.append(key)
+
+jsonStr += ",\"IDS\":" + regex.sub(lambda mo: attrDict[mo.string[mo.start():mo.end()]], json.dumps(idArr))
 
 DEBUG("Writing processed data to output")
 jsonStr += "}"
