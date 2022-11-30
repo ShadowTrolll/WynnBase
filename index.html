@@ -178,7 +178,7 @@
             function VerifyIngDict() {
                 if (Object.keys(ingList).length === 0) {
                     console.debug("Fetching ingredient data");
-                    let dataJson = JSON.parse(Get("https://shadowtrolll.github.io/WynnBase/Resources/IngData.json"));
+                    let dataJson = JSON.parse(Get("https://shadowtrolll.github.io/WynnBase/IngData.json"));
                     ingList = dataJson["LIST"];
                     ingDict = dataJson["DATA"];
                 }
