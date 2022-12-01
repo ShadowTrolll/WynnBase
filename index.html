@@ -481,11 +481,15 @@
                 // -------------- Show results in container -----------------
                 let dataCont = document.getElementById("dataContainer");
 
-                for (child of dataCont.children) {
-                    if (results.includes(child.id)) child.style = "";
-                    else child.style = "display: none;";
-                    
-                }               
+                for (ingName of ingList) {
+                    let ingBox = document.getElementById(ingName);
+                    ingBox.style = "display: none;";
+                }
+
+                for (ingName of results) {
+                    let ingBox = document.getElementById(ingName);
+                    ingBox.style = "";
+                }            
             }
 
             function CreateIngBox(ingObj) {
