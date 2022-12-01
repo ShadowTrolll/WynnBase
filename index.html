@@ -481,15 +481,11 @@
                 // -------------- Show results in container -----------------
                 let dataCont = document.getElementById("dataContainer");
 
-                for (ingName of ingList) {
-                    let ingBox = document.getElementById("ingBox_" + ingName.replace(/\s/g, '_'));
-                    ingBox.style = "display: none;";
-                }
-
-                for (ingName of results) {
-                    let ingBox = document.getElementById("ingBox_" + ingName.replace(/\s/g, '_'));
-                    ingBox.style = "";
-                }
+                for (child of dataCont.children) {
+                    if (results.includes(child.id)) child.style = "";
+                    else child.style = "display: none;";
+                    
+                }               
             }
 
             function CreateIngBox(ingObj) {
@@ -547,7 +543,7 @@
                 }
                 ingBox.appendChild(sectionDiv);
 
-                ingBox.id = "ingBox_" + ingName.replace(/\s/g, '_');
+                ingBox.id = ingName;
                 return ingBox;
             }
         </script>
