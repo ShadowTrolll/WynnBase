@@ -481,15 +481,17 @@
                 // -------------- Show results in container -----------------
                 let dataCont = document.getElementById("dataContainer");
 
-                for (ingName of ingList) {
-                    let ingBox = document.getElementById(ingName);
-                    ingBox.style = "display: none;";
+                if (ingList.length !== results.length) {
+                    for (ingName of ingList) {
+                        let ingBox = document.getElementById(ingName);
+                        ingBox.style = "display: none;";
+                    }
                 }
 
                 for (ingName of results) {
                     let ingBox = document.getElementById(ingName);
                     ingBox.style = "";
-                }            
+                }       
             }
 
             function CreateIngBox(ingObj) {
